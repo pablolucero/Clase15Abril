@@ -1,17 +1,29 @@
 package model;
 
+import model.exception.TooLittleMinesPerBoardException;
+import model.exception.TooManyMinesPerBoardException;
+import model.exception.TooSmallBoardException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Board {
 	
+	public static final int MINES_PER_BOARD_PERCENTAGE = 70; 
+	
 	private int rows;
 	private int columns;
 	private int mines;
 	private Cell[][] cells;
 
-	public Board(int rows, int columns, int mines) {
+	public Board(int rows, int columns, int mines) throws TooSmallBoardException, TooManyMinesPerBoardException, TooLittleMinesPerBoardException {
+		if (rows*columns < 10)
+			throw new TooSmallBoardException();
+		if (rows*columns*MINES_PER_BOARD_PERCENTAGE/100 > mines)
+			throw new TooManyMinesPerBoardException();
+		if (mines == 0)
+			throw new TooLittleMinesPerBoardException();
 		this.rows = rows;
 		this.columns = columns;
 		this.mines = mines;
@@ -22,7 +34,7 @@ public class Board {
 
 	private void setMines() {
 		int i = 0;
-		while (i<mines && i < rows * columns) {
+		while (i<mines && i < rows*columns) {
 			int x = new Random().nextInt(this.rows);
 			int y = new Random().nextInt(this.columns);
 			if (!hasMine(x, y)) {
