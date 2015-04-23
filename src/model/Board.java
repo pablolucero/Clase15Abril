@@ -10,20 +10,20 @@ import java.util.Random;
 
 public class Board {
 	
-	public static final int MINES_PER_BOARD_PERCENTAGE = 70; 
-	
+	public static final int MINES_PER_BOARD_PERCENTAGE = 70;
+
 	private int rows;
 	private int columns;
 	private int mines;
 	private Cell[][] cells;
 
 	public Board(int rows, int columns, int mines) throws TooSmallBoardException, TooManyMinesPerBoardException, TooLittleMinesPerBoardException {
-		if (rows*columns < 10)
+		if (rows * columns < 10)
 			throw new TooSmallBoardException();
-		if (rows*columns*MINES_PER_BOARD_PERCENTAGE/100 > mines)
-			throw new TooManyMinesPerBoardException();
 		if (mines == 0)
 			throw new TooLittleMinesPerBoardException();
+		if (rows * columns * MINES_PER_BOARD_PERCENTAGE / 100 < mines)
+			throw new TooManyMinesPerBoardException();
 		this.rows = rows;
 		this.columns = columns;
 		this.mines = mines;
